@@ -9,7 +9,15 @@ DATA_KEY = 'engine_temperature'
 
 app = Flask(__name__)
 
-@app.route('/record', methods=['POST'])
+@app.route('/')
+def hello():
+    # print("HEllo")
+    # redis.incr('hits')
+    # counter = str(redis.get('hits'),'utf-8')
+    return "Welcome to this webapage!, This webpage has been viewed "+" time(s)"
+
+
+@app.route('/record', methods=['GET', 'POST'])
 def record_engine_temperature():
     payload = request.get_json(force=True)
     logger.info(f"(*) record request --- {json.dumps(payload)} (*)")
@@ -46,9 +54,9 @@ def collect_engine_temperature():
     result = {"current_engine_temperature": engine_temperature_values[0], "average_engine_temperature": average_engine_temperature}
     logger.info(f"collect request successful")
 
-    return result, 200
+    return result
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
     
